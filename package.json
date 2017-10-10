@@ -20,7 +20,6 @@
   "homepage": "https://github.com/Nick-Dikiy/do-it-test#readme",
   "devDependencies": {
     "2gis-maps": "^3.3.5",
-    "2gis-maps-react": "0.0.4",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",

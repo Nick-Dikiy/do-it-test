@@ -3,7 +3,6 @@ import  Menu from './Menu';
 import SimpleMap from './SimpleMap';
 
 
-
 class mainPage extends Component{
     render(){
         return (
