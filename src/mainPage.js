@@ -10,7 +10,6 @@ class mainPage extends Component{
             <div>
                 <Menu />
                 <SimpleMap />
-
             </div>
         )
     }

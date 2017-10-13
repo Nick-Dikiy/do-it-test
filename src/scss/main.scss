@@ -24,3 +24,56 @@
   margin-top: 40px;
   display: block;
 }
+
+.container{
+  display: block;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+.popup{
+  display: block;
+  width: 400px;
+  margin:  40px auto;
+  box-shadow: black;
+}
+
+.inp{
+  display: block;
+  line-height: 40px;
+  width: 400px;
+  margin: 10px auto;
+  font-size: 14px;
+  font-style: italic;
+  padding: 0px 20px;
+  box-sizing: border-box;
+}
+.btn{
+  display: inline-block;
+  width: 45%;
+  line-height: 35px;
+  background: transparent;
+  border: 2px solid #ff5c00;
+  font-size: 20px;
+  margin: 20px auto;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.btn:last-of-type{margin-left: 5%}
+.btn:hover{
+  cursor: pointer;
+  background: #ff5c00;
+  color:#fff
+}
+
+.sigin .popup{
+  text-align: center;
+}
+.sigin .popup .btn{
+  margin-left: 0!important;
+  margin-right: 0!important;
+}
+
