@@ -1,25 +1,31 @@
 'use strict';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools} from 'redux-devtools-extension';
-import {HashRouter as Router, Route, Switch} from 'react-router-dom'
-import About from './About'
-import mainPage from './mainPage';
-import App from './App';
+import thunk from 'redux-thunk';
+import {  BrowserRouter  } from 'react-router-dom';
+import Routes from './routes'
+import Header from './components/Header'
 
 
-import './css/main.css';
+import rootReducer from './reducers'
+
 import './scss/main.scss';
 
 
-ReactDOM.render(
-        <Router>
-            <Switch>
-                <Route exact path="/" component={App}/>
-                <Route path="/mainPage" component={mainPage}/>
-                <Route path="/about" component={About}/>
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
-            </Switch>
-        </Router>,
+ReactDOM.render(
+    <Provider store={store}>
+        <BrowserRouter>
+            <div>
+                <Header />
+                <Routes />
+            </div>
+        </BrowserRouter>
+    </Provider>,
     document.getElementById('root')
 );

@@ -16,7 +16,8 @@ module.exports = {
     output: {
         path: __dirname + '/public',
         filename: "./js/[name].js",
-        library: "[name]"
+        library: "[name]",
+        publicPath: '/'
     },
 
     watch: NODE_ENV == 'development',
@@ -28,7 +29,7 @@ module.exports = {
             NODE_ENV: JSON.stringify(NODE_ENV)
         }),
 
-        new ExtractTextPlugin("./css/styles.css"),
+        new ExtractTextPlugin("./css/main.css"),
 
         new HtmlWebpackPlugin({
             hash: true,
@@ -104,7 +105,6 @@ module.exports = {
     devServer: {
         contentBase: __dirname + '/public',
         compress: true,
-        port: 9000
     }
 };
 

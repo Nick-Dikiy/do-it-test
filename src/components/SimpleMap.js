@@ -3,7 +3,9 @@
 import React, {Component} from 'react';
 import DG from '2gis-maps';
 import axios  from 'axios';
-export default class SM extends  Component{
+
+
+export default class SimpleMap extends  Component{
     constructor(props){
         super(props);
 
@@ -17,7 +19,7 @@ export default class SM extends  Component{
 
 
         let  dgElement = DG.map('map',
-            {zoom:10,center: coords}
+            {zoom:13,center: coords}
         );
         let coords = [];
 
