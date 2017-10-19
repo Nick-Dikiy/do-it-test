@@ -33,8 +33,7 @@ class Signin extends Component{
 
     sign = () =>{
 
-        this.props.signIn('NICK');
-
+        this.props.signIn();
         console.log('signIn', this.props.authReducer);
     };
 

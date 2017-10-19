@@ -5,7 +5,8 @@ export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
 
         case ADD_USER:
-            return [ ...state, {user: action.user }];
+            console.log('bla')
+            return   { user: action.user };
 
         default:
             return state;
