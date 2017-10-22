@@ -16,7 +16,7 @@ var Schema = mongoose.Schema({
     login: { type: String, required: true },
     password: { type: String, required: true },
     email: { type: String, required: true },
-    markers: {type: String, default: ''},
+    markers: {type: Array, default: []},
     modified: { type: Date, default: Date.now }
 });
 

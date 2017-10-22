@@ -56,7 +56,7 @@ class Auth extends Component{
             email:''+this.state.email,
         }
         ).then(res =>{
-            this.props.history.push('./mainPage')
+            dispatch(this.props.history.push('./mainPage'))
         })
         .catch(err =>{
 

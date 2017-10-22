@@ -38,7 +38,6 @@ module.exports = {
             template: '../src/index.html',
             filename: '../public/index.html'
         }),
-        new webpack.HotModuleReplacementPlugin()
 
     ],
 

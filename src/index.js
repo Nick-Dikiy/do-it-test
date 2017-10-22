@@ -10,7 +10,6 @@ import {  BrowserRouter  } from 'react-router-dom';
 import Routes from './routes'
 import Header from './components/Header'
 
-
 import rootReducer from './reducers'
 
 import './scss/main.scss';

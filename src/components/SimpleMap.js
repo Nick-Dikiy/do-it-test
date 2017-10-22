@@ -2,35 +2,31 @@
 
 import React, {Component} from 'react';
 import DG from '2gis-maps';
-import axios  from 'axios';
+import {connect} from 'react-redux';
+import {addMarkers} from '../actions/mapActions';
 
-
-export default class SimpleMap extends  Component{
+class SimpleMap extends  Component{
     constructor(props){
         super(props);
 
         this.state = {
-            markersCoordinates: []
+            markersLatLan: []
         };
-    this.saveMarkers = this.saveMarkers.bind(this)
     }
 
     componentDidMount(){
 
 
         let  dgElement = DG.map('map',
-            {zoom:13,center: coords}
+            {zoom:13,center: [74.9,42]}
         );
-        let coords = [];
 
-
-
-        dgElement.locate({setView: true, watch: true})
+        dgElement.locate({setView: true, watch: false})
             .on('locationfound', function(e) {
                 DG.marker([e.latitude, e.longitude]).addTo(dgElement);
-                coords = [e.latitude, e.longitude];
             })
             .on('locationerror', function(e) {
+                console.log(e)
                 DG.popup()
                     .setLatLng(dgElement.getCenter())
                     .setContent('Доступ к определению местоположения отключён')
@@ -39,50 +35,47 @@ export default class SimpleMap extends  Component{
 
         dgElement.on('click',function (e) {
             this.setState({
-                markersCoordinates: [...this.state.markersCoordinates,[e.latlng.lat, e.latlng.lng]]
+                markersLatLan: [...this.state.markersLatLan,[e.latlng.lat, e.latlng.lng]]
             });
             DG.marker([e.latlng.lat, e.latlng.lng]).addTo(dgElement);
+
+            this.props.addMarkers(this.state.markersLatLan)
 
         }.bind(this));
     }
 
 
-    saveMarkers =() =>{
-        axios.post('http://localhost:3000/mainPage', {
-            corditates: ''+this.state.markersCoordinates,
-        }).then( res =>{
-        })
-            .catch(err =>{
-                console.log('false')
-            })
-    };
 
-    showMarkers =() =>{
-        axios.post('http://localhost:3000/showMarkers', {
-            // showMarkers: '',
-        }).then( res =>{
-            console.log(res, '123123')
 
-        })
-            .catch(err =>{
-                console.log('false')
-            })
-    };
 
 
     render(){
-
         return(
-            <div className="container">
-                <div className="btn" onClick={this.showMarkers}>Show markers</div>
-                <div className="btn" onClick={this.saveMarkers}>Save markers</div>
+            <div className="container-full">
                 <div id="map"></div>
             </div>
-
         )
     }
 
-};
+}
+
+
+
+function mapStateToProps(state) {
+    return {
+        mapReducer: state.mapReducer
+    }
+}
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         signIn: () => {
+//             dispatch(signIn());
+//         }
+//     }
+// };
+
+
+export default connect(mapStateToProps, {addMarkers})(SimpleMap);
 
 
 

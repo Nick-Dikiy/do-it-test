@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch  } from 'react-router-dom';
+import { Route, Switch, Redirect  } from 'react-router-dom';
 
 
 
@@ -12,6 +12,8 @@ import signin from './components/pages/signin';
 
 const Routes = () => (
     <Switch>
+        <Route exact path="/" render={() => (<Redirect to="/login" />)} />
+
             <Route path="/login" component={login} />
             <Route path="/main"  component={main} />
             <Route path="/about" component={about} />

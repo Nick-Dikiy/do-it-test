@@ -2,12 +2,13 @@ import { Link } from 'react-router-dom'
 import React from 'react';
 
 const Header = () => (
+
     <header>
-        <nav>
-            <ul>
-                <li><Link to='./login'>login</Link></li>
-                <li><Link to='./main'>main</Link></li>
-                <li><Link to='./about'>about</Link></li>
+        <nav className="wrapper-fluid">
+            <ul className="header-list">
+                <li className="header-item"><Link className="header-link" to='./login'>login</Link></li>
+                <li className="header-item"><Link className="header-link" to='./main'>main</Link></li>
+                <li className="header-item"><Link className="header-link" to='./about'>about</Link></li>
 
             </ul>
         </nav>

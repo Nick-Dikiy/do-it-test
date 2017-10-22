@@ -1,12 +1,15 @@
-import {ADD_USER} from '../actions/authActions'
-const INITIAL_STATE = {user: 'unknown user'};
+import {ADD_USER, USER_LOGINED} from '../actions/authActions'
+
+const INITIAL_STATE = {token: '', errors: ''};
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
 
         case ADD_USER:
-            console.log('bla')
-            return   { user: action.user };
+            return   { token: action.token };
+
+        case USER_LOGINED:
+            return {token: action.token};
 
         default:
             return state;

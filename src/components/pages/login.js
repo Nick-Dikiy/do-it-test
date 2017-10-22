@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { Route, Switch, Link  } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import {connect} from 'react-redux';
+import axios from 'axios'
+
+import {logIn} from '../../actions/authActions';
+import validate from '../../../backend/validator'
+
 
 class Login extends Component{
     constructor(props){
@@ -8,38 +14,70 @@ class Login extends Component{
         this.state = {
             login: '',
             password: '',
-            email: '',
-
+            errors: ''
         };
     }
-
-    changeLogin = e =>{
+    changeInput = e =>{
         this.setState({
-            login: e.target.value
-        } );
-    };
-    changePassword = e =>{
-        this.setState({
-            password: e.target.value
+            [e.target.name]: e.target.value
         } );
     };
 
+    login = () =>{
+        event.preventDefault;
+        const userData = {login: this.state.login, password: this.state.password};
+        let validData = validate(userData);
+        if (validData.isValid){
 
+            axios.post('http://localhost:3000/login', {
+                user: JSON.stringify(userData),
+                // headers:{'x-login': login,'x-pwd': password, 'x-email': email, }
+            })
+                .then(res =>{
+                    if (res.status == 200){
+                        this.props.logIn(res.data.token)
+                        localStorage.setItem('token', res.data.token)
+                        this.props.history.push('./main')
+                    }
+                })
+                .catch(err =>{
+                    console.log(err.response.data.errors);
+
+                    this.setState({
+                        errors: err.response.data.errors
+                    })
+                })
+
+        } else {
+            this.setState({
+                errors: validData.errors
+            })
+        }
+    };
 
     render(){
 
             return (
                 <div className="container">
-                    <div className="login">
-                        <form className="popup">
-                            <input className="inp" type="text" placeholder="login" onChange={this.changeLogin} />
-                            <input className="inp" type="password" placeholder="password" onChange={this.changePassword} />
-                            <div className="buttons">
-                                <div className="btn " onClick={this.logIn}>Log in</div>
-                                <Link className="btn " to='./signin'>Sign in</Link>
-                            </div>
-                        </form>
-                    </div>
+                    <form className="auth-form">
+                        <div className="inp-row">
+                            <input className="inp" type="text" placeholder="login" name="login" onChange={this.changeInput} />
+                            <span className="info-message">{this.state.errors.login}</span>
+                        </div>
+                        <div className="inp-row">
+                            <input className="inp" type="password" placeholder="password" name="password" onChange={this.changeInput} />
+                            <span className="info-message">{this.state.errors.password}</span>
+                        </div>
+                        <div className="">
+
+
+                            <div className="btn " onClick={this.login}>Log in</div>
+                            <Link className="btn " to='./signin'>Sign in</Link>
+
+
+                            <span>{this.state.errors.notFoudUser}</span>
+                        </div>
+                    </form>
                 </div>
             )
         }
@@ -47,4 +85,10 @@ class Login extends Component{
 
 }
 
-export  default Login
+function mapStateToProps(state) {
+    return {
+        authReducer: state.authReducer
+    }
+}
+
+export default connect(mapStateToProps,{logIn})(Login);

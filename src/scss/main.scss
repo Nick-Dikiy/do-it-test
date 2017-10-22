@@ -1,22 +1,88 @@
-header{
+@import "./default-styles/normilize";
+
+
+.wrapper{
   display: block;
-  font-size: 0;
   max-width: 1200px;
-  padding: 0 15px;
-  box-sizing: border-box;
-}
-ul{
-  display: inline-block;
   width: 100%;
-  font-size: 0;
+  margin: 0 auto;
+  text-align: center;
+}
+.wrapper-fluid{
+  display: block;
+  width: 100%;
   text-align: center;
 }
 
-li{
+header{
+  display: block;
+  width: 100%;
+
+
+}
+
+.header-list{
   display: inline-block;
-  font-size: 20px;
-  padding: 10px 20px;
-  text-transform: uppercase;
+  width: 100%;
+  height: inherit;
+  font-size: 0;
+  text-align: center;
+  vertical-align: middle;
+  background: #e3e3e3;
+
+  .header-item{
+    display: inline-block;
+    font-size: 20px;
+    text-transform: uppercase;
+    padding: 10px 20px;
+
+    .header-link{
+      display: inline-block;
+      font-size: 24px;
+      font-weight: 500;
+      color: #000000;
+      text-decoration: none;
+
+    }
+    &>:hover{
+      color: #945604;
+    }
+  }
+}
+
+.auth-form{
+  display: block;
+  width: 50%;
+  margin:  40px auto;
+  box-shadow: black;
+
+  .inp-row{
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+
+
+    .inp{
+      display: inline-block;
+      width: 100%;
+      line-height: 38px;
+      height: auto;
+      margin: 10px auto;
+      font-size: 16px;
+      font-style: italic;
+      padding: 0px 20px;
+      border: 1px solid #2f2f2f;
+      box-sizing: border-box;
+    }
+
+    .info-message{
+      display: inline-block;
+      width: 50%;
+      margin: 10px auto;
+      font-size: 20px;
+    }
+
+  }
 }
 
 
@@ -26,32 +92,12 @@ li{
   height: 500px;
 }
 
-.container{
-  display: block;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
-}
 
 
-.popup{
-  display: block;
-  width: 400px;
-  margin:  40px auto;
-  box-shadow: black;
-}
 
-.inp{
-  display: block;
-  line-height: 40px;
-  width: 400px;
-  margin: 10px auto;
-  font-size: 14px;
-  font-style: italic;
-  padding: 0px 20px;
-  box-sizing: border-box;
-}
+
+
+
 .buttons{
   display: inline-block;
   width: 100%;

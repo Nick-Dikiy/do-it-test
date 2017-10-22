@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const mongoDB = 'mongodb://localhost/doit';
 
 mongoose.connect(mongoDB, {useMongoClient: true});
-
+mongoose.Promise = Promise;
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
