@@ -18,11 +18,13 @@ export const load = (markers)  => dispatch => {
         type: LOAD_MARKERS,
         markers: markers
     });
+
 };
 
 export const save = (markers)  => dispatch => {
     dispatch({
-        type: LOAD_MARKERS,
+        type: SAVE_MARKERS,
         markers: markers
     });
 };
+

@@ -125,15 +125,15 @@ import validate from '../backend/validator'
         });
     });
 
-    router.post('/showMarkers', function (req, res) {
-        // let markers = JSON.parse(req.body.data);
-        // let token = req.headers.authorization;
-        // let decoded = jwt.verify(token, 'jwt token');
+    router.get('/showMarkers', function (req, res) {
+        let token = req.headers.authorization;
+        let decoded = jwt.verify(token, 'jwt token');
 
-        // userSchema.findOne({_id: session}, (err, ext) =>{
-        //     console.log(ext)
-        //         // console.log(JSON.stringify.ext);
-        // });
+        userSchema.findOne({login: decoded.login, email: decoded.email}, (err, ext) =>{
+            console.log(ext.markers)
+            return res.send({status: 'OK', markers: ext.markers});
+                // console.log(JSON.stringify.ext);
+        });
 
     });
 

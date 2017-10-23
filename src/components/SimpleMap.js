@@ -3,29 +3,30 @@
 import React, {Component} from 'react';
 import DG from '2gis-maps';
 import {connect} from 'react-redux';
-import {addMarkers} from '../actions/mapActions';
+import {addMarkers, load} from '../actions/mapActions';
 
 class SimpleMap extends  Component{
+
     constructor(props){
         super(props);
 
         this.state = {
-            markersLatLan: []
+            markersLatLan: [],
+            markers: [48.999,20.999]
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
-
-        let  dgElement = DG.map('map',
-            {zoom:13,center: [74.9,42]}
+        let dgElement = DG.map('map',
+            {zoom: 4, center: [74.9, 42]}
         );
 
         dgElement.locate({setView: true, watch: false})
-            .on('locationfound', function(e) {
+            .on('locationfound', function (e) {
                 DG.marker([e.latitude, e.longitude]).addTo(dgElement);
             })
-            .on('locationerror', function(e) {
+            .on('locationerror', function (e) {
                 console.log(e)
                 DG.popup()
                     .setLatLng(dgElement.getCenter())
@@ -33,9 +34,9 @@ class SimpleMap extends  Component{
                     .openOn(dgElement);
             });
 
-        dgElement.on('click',function (e) {
+        dgElement.on('click', function (e) {
             this.setState({
-                markersLatLan: [...this.state.markersLatLan,[e.latlng.lat, e.latlng.lng]]
+                markersLatLan: [...this.state.markersLatLan, [e.latlng.lat, e.latlng.lng]]
             });
             DG.marker([e.latlng.lat, e.latlng.lng]).addTo(dgElement);
 
@@ -44,15 +45,11 @@ class SimpleMap extends  Component{
         }.bind(this));
     }
 
-
-
-
-
-
     render(){
+
         return(
             <div className="container-full">
-                <div id="map"></div>
+                <div id="map" data={this.props.markers}></div>
             </div>
         )
     }
@@ -65,17 +62,9 @@ function mapStateToProps(state) {
     return {
         mapReducer: state.mapReducer
     }
-}
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         signIn: () => {
-//             dispatch(signIn());
-//         }
-//     }
-// };
+};
 
-
-export default connect(mapStateToProps, {addMarkers})(SimpleMap);
+export default connect(mapStateToProps, {addMarkers, load})(SimpleMap);
 
 
 
