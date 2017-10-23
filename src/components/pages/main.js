@@ -13,7 +13,6 @@ class Main extends Component{
         };
     }
 
-}
     saveMarkers =() =>{
             if (this.props.mapReducer.markers !== '' ){
                 let markers = JSON.stringify(this.props.mapReducer);
@@ -61,27 +60,17 @@ class Main extends Component{
                         markers: markers
                     })
                         this.props.load(markers)
-
-//
-//                     console.log(dgElement)
-//                     DG.marker(res.data.markers).addTo(dgElement);
-
-
-
                 })
                 .catch(err => {
                     console.log(err)
                 })
-
-
-
         }else{
             this.props.history.push('./login')
         }
     };
 
+    render(){
         return (
-
             <div>
                 <div className="container">
                     <div className="btn" onClick={this.showMarkers}>Show markers</div>

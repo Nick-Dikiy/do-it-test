@@ -49,7 +49,7 @@ class SimpleMap extends  Component{
 
         return(
             <div className="container-full">
-                <div id="map" data={this.props.markers}></div>
+                <div id="map"></div>
             </div>
         )
     }
