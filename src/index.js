@@ -14,6 +14,10 @@ import rootReducer from './reducers'
 
 import './scss/main.scss';
 
+//
+// import geo from './images/geocoder.png'
+// import search from './images/throbber.gif'
+
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 

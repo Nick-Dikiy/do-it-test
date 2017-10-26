@@ -1,127 +1,88 @@
 const express = require('express');
 const router = express.Router();
 const configDB = require('./configDB');
-const userSchema = require('./models/userScheme').userSchema;
+const User = require('./models/userScheme');
+const geoInfoScheme = require('./models/geoInfoScheme');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 import validate from '../backend/validator'
 
 
     router.post('/login', function (req, res) {
-        const userData = JSON.parse(req.body.user);
+        const { user } = req.body;
 
-        const login = userData.login;
-        const password = userData.password;
+        const login = user.login;
+        const password = user.password;
 
-        let validData = validate(userData);
+        let validData = validate(user);
 
-        if (validData){
-            userSchema.findOne(   {login: login}   , function (err, userSchema) {
-                if (userSchema){
+        if (!validData) return res.status(401).json(validData)
 
-                    bcrypt.compare(password, userSchema.password, function(err, result) {
-                        if (result){
-                            let token = jwt.sign({login: login, email: userSchema.email}, 'jwt token');
-                            console.log(token)
-                            return res.send({status: 'OK', token: token});
-                        }else{
-                            validData.errors.notFoundUser = 'User with such password not found';
-                            validData.isValid = false;
-                            res.statusCode = 401;
-                            return res.type('json').json(validData)
-                        }
-                    })
+        User.findOne( {login: login} )
+        .then(foundUser =>{
+
+            bcrypt.compare(password, foundUser.password)
+            .then((check) => {
+                if (check){
+                    let token = jwt.sign({login: login, email: foundUser.email}, 'jwt token');
+                    return res.send({status: 'OK', token: token});
                 }else{
-                    validData.errors.notFoundUser = 'User with such login  not found';
+                    validData.errors.notFoundUser = 'User with such password not found';
                     validData.isValid = false;
-                    res.statusCode = 401;
-                    return res.type('json').json(validData)
+                    return res.status(401).json(validData)
                 }
             })
-
-        }else {
-
-        }
+        })
+        .catch(() => {
+            validData.errors.notFoundUser = 'User with such login  not found';
+            validData.isValid = false;
+            return res.status(401).json(validData)
+        })
     });
-
-
-
-
 
     router.post('/signin', function (req, res) {
-
-        const userData = JSON.parse(req.body.user);
+        const { user } = req.body;
 
         const salt = bcrypt.genSaltSync(10);
+        const password = bcrypt.hashSync(user.password, salt);
 
-        const login = userData.login;
-        const password = bcrypt.hashSync(userData.password, salt);
-        const email = userData.email;
+        let validData = validate(user);
+        if (!validData.isValid) return res.status(401).json(validData)
 
-        let validData = validate(userData);
+        const newUser = new User({
+            login: user.login,
+            password: password,
+            email: user.email,
 
+        });
 
-        if (validData.isValid){
-            const user = new userSchema({
-                login: login,
-                password: password,
-                email: email,
+        newUser.save()
+        .then(() => {
+            console.log("User created");
+            const token = jwt.sign({login: user.login, email: user.email}, 'jwt token');
+            return res.send({status: 'OK', token: token});
+        })
+        .catch(err => {
+            if (err.code === 11000) {
+                validData.errors.userExist = 'User with such login and e-mail already exists';
+                validData.isValid = false;
+                return res.status(401).json(validData)
+            }
 
-            });
-
-            userSchema.findOne( { $or:[ {login: login}, {email: email}  ] } , function (empty, find){
-                if (find){
-                    validData.errors.userExist = 'User with such login and e-mail already exists';
-                    validData.isValid = false;
-                    res.statusCode = 401;
-                    return res.type('json').json(validData)
-
-
-                }else{
-                    user.save(function (err) {
-                        if (!err) {
-                            console.log("User created");
-                            let token = jwt.sign({login: login, email: email}, 'jwt token');
-
-                            return res.send({status: 'OK', token: token});
-
-                        }else {
-                             res.status(500);
-                             res.send({ error: 'Server error' });
-                         }
-                         console.error('Internal error(%d): %s',res.statusCode,err.message);
-
-                    });
-                }
-            });
-
-        }else{
-            res.statusCode = 401;
-            return res.type('json').json(validData)
-        }
-
-
-
-
-
+            res.status(500).json({ message: 'Some server error' })
+        })
     });
 
-
-
-
-
-
-
-
     router.post('/saveMarkers', function (req, res) {
-        let markers = JSON.parse(req.body.data);
+        const {markers} = req.body
+        console.log(markers)
         let token = req.headers.authorization;
         let decoded = jwt.verify(token, 'jwt token');
 
-        userSchema.update(({login: decoded.login, email: decoded.email},{
-        markers: markers.markers
-        }), (err, userSchema) =>{
-            console.log(userSchema)
+        User.update(({login: decoded.login, email: decoded.email},{
+        markers: markers
+        }), (err, User) =>{
+            console.log(User)
         });
     });
 
@@ -129,13 +90,30 @@ import validate from '../backend/validator'
         let token = req.headers.authorization;
         let decoded = jwt.verify(token, 'jwt token');
 
-        userSchema.findOne({login: decoded.login, email: decoded.email}, (err, ext) =>{
-            console.log(ext.markers)
-            return res.send({status: 'OK', markers: ext.markers});
-                // console.log(JSON.stringify.ext);
-        });
+        User.findOne( {login: decoded.login, email: decoded.email} )
+            .then( foundMarkers =>{
+                console.log(foundMarkers)
+                return res.send({status: 'OK', markers: foundMarkers.markers});
+            })
+            .catch(() => {
+
+            })
 
     });
 
+    router.post('/Builds', function (req,res) {
+        const  { item }  = req.body;
+        let type = req.body.data;
+// console.log(type)
+        geoInfoScheme.find( {type: type} )
+            .then( foundBuilds =>{
+                console.log(foundBuilds)
+                return res.send({status: 'OK', items: foundBuilds});
+            })
+            .catch(() => {
+
+            })
+
+    });
 
 module.exports = router;

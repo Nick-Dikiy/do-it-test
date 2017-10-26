@@ -24,15 +24,14 @@ class Signin extends Component{
     };
 
 
-   sign = () =>{
+   signin = () =>{
         event.preventDefault;
 
         const userData = {login: this.state.login, password: this.state.password, email: this.state.email};
         let validData = validate(userData);
        if (validData.isValid){
-           console.log(userData)
            axios.post('http://localhost:3000/signin', {
-               user: JSON.stringify(userData),
+               user: userData,
                // headers:{'x-login': login,'x-pwd': password, 'x-email': email, }
            })
            .then(res =>{
@@ -71,7 +70,7 @@ class Signin extends Component{
                         <input className="inp" type="text" placeholder="e-mail" name="email" onChange={this.changeInput} />
                         <span className="info-message">{this.state.errors.email}</span>
                     </div>
-                    <div className="btn "  onClick={this.sign}>Sign in</div>
+                    <div className="btn "  onClick={this.signin}>Sign in</div>
                     <span>{this.state.errors.userExist}</span>
                 </form>
             </div>

@@ -3,31 +3,34 @@
 import React, {Component} from 'react';
 import DG from '2gis-maps';
 import {connect} from 'react-redux';
-import {addMarkers, load} from '../actions/mapActions';
-
+import {addMarkers,clearMarkers} from '../actions/mapActions';
+import 'leaflet-control-geocoder'
 class SimpleMap extends  Component{
-
     constructor(props){
         super(props);
-
         this.state = {
-            markersLatLan: [],
-            markers: [48.999,20.999]
+            markers: [],
+            dgElement: null,
         };
     }
 
     componentDidMount() {
+        let dgElement = DG.map( 'map', {zoom: 12, center: [46.46, 30.76], closePopupOnClick: false, geoclicker: {showPhotos:true, showBooklet:true, showRouteSearch: true}} );
 
-        let dgElement = DG.map('map',
-            {zoom: 4, center: [74.9, 42]}
-        );
+        let marker = (a,b) =>{
+           let el = DG.marker([a,b]).addTo(dgElement);
 
-        dgElement.locate({setView: true, watch: false})
+        };
+
+        dgElement.locate({setView: false, watch: false})
             .on('locationfound', function (e) {
-                DG.marker([e.latitude, e.longitude]).addTo(dgElement);
+                let lat = e.latlng.lat;
+                let lng = e.latlng.lng;
+                marker(lat,lng);
+                document.getElementsByClassName('dg-customization__marker')[0].id ='current_position'
+
             })
             .on('locationerror', function (e) {
-                console.log(e)
                 DG.popup()
                     .setLatLng(dgElement.getCenter())
                     .setContent('Доступ к определению местоположения отключён')
@@ -35,28 +38,48 @@ class SimpleMap extends  Component{
             });
 
         dgElement.on('click', function (e) {
-            this.setState({
-                markersLatLan: [...this.state.markersLatLan, [e.latlng.lat, e.latlng.lng]]
-            });
-            DG.marker([e.latlng.lat, e.latlng.lng]).addTo(dgElement);
+            let lat = e.latlng.lat;
+            let lng = e.latlng.lng;
 
-            this.props.addMarkers(this.state.markersLatLan)
+            marker(lat,lng);
+
+            this.setState({
+                markers: [...this.state.markers, [lat, lng]]
+            });
+
+            this.props.addMarkers(this.state.markers);
 
         }.bind(this));
+
+        DG.control.location({position: 'bottomright'}).addTo(dgElement);
+        DG.control.ruler({position: 'bottomleft'}).addTo(dgElement);
+        DG.control.traffic().addTo(dgElement);
+        let geocoder = L.Control.geocoder().addTo(dgElement);
+
+        this.setState({
+            dgElement: dgElement,
+        });
+    }
+
+    componentDidUpdate() {
+        const { dgElement } = this.state;
+
+        let markers = (this.props.mapReducer.markers);
+
+        for (let key in markers) {
+            DG.marker(markers[key]).addTo(dgElement);
+        }
+        let items = (this.props.mapReducer.items);
     }
 
     render(){
-
         return(
             <div className="container-full">
                 <div id="map"></div>
             </div>
         )
     }
-
 }
-
-
 
 function mapStateToProps(state) {
     return {
@@ -64,7 +87,7 @@ function mapStateToProps(state) {
     }
 };
 
-export default connect(mapStateToProps, {addMarkers, load})(SimpleMap);
+export default connect(mapStateToProps, {addMarkers, clearMarkers})(SimpleMap);
 
 
 

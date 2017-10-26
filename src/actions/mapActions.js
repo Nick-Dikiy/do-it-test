@@ -1,15 +1,15 @@
 export const SAVE_MARKERS = 'SAVE_MARKERS';
 export const LOAD_MARKERS = 'LOAD_MARKERS';
 export const ADD_MARKERS = 'ADD_MARKERS';
-
+export const SELECTED_ITEMS = 'SELECTED_ITEMS';
+export const CLEAR_MARKERS = 'CLEAR_MARKERS';
 import jwtDecode from 'jwt-decode';
 
 
 export const addMarkers = (markers)  => dispatch => {
-    console.log(markers)
     dispatch({
         type: ADD_MARKERS,
-        markers: markers
+        markers:  markers
     });
 };
 
@@ -25,6 +25,13 @@ export const save = (markers)  => dispatch => {
     dispatch({
         type: SAVE_MARKERS,
         markers: markers
+    });
+};
+
+export const select = (items)  => dispatch => {
+    dispatch({
+        type: SELECTED_ITEMS,
+        items: items
     });
 };
 

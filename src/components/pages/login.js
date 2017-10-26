@@ -30,7 +30,7 @@ class Login extends Component{
         if (validData.isValid){
 
             axios.post('http://localhost:3000/login', {
-                user: JSON.stringify(userData),
+                user: userData,
                 // headers:{'x-login': login,'x-pwd': password, 'x-email': email, }
             })
                 .then(res =>{
