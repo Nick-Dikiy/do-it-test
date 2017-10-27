@@ -15,11 +15,11 @@ class SimpleMap extends  Component{
     }
 
     componentDidMount() {
-        let dgElement = DG.map( 'map', {zoom: 12, center: [46.46, 30.76], closePopupOnClick: false, geoclicker: {showPhotos:true, showBooklet:true, showRouteSearch: true}} );
+        let dgElement = DG.map( 'map', {zoom: 12,minZoom:2, center: [46.46, 30.76], closePopupOnClick: false, geoclicker: {showPhotos:true, showBooklet:true, showRouteSearch: true}} );
 
         let marker = (a,b) =>{
-           let el = DG.marker([a,b]).addTo(dgElement);
-
+           DG.marker([a,b]).addTo(dgElement);
+           dgElement.setView([a,b]);
         };
 
         dgElement.locate({setView: false, watch: false})
@@ -68,6 +68,7 @@ class SimpleMap extends  Component{
 
         for (let key in markers) {
             DG.marker(markers[key]).addTo(dgElement);
+            dgElement.setView(markers[key]);
         }
         let items = (this.props.mapReducer.items);
     }

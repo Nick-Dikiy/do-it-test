@@ -5,7 +5,6 @@ import {signIn} from '../../actions/authActions';
 import axios  from 'axios';
 import validate from '../../../backend/validator'
 
-
 class Signin extends Component{
     constructor(props){
         super(props);
@@ -22,7 +21,6 @@ class Signin extends Component{
             [e.target.name]: e.target.value
         } );
     };
-
 
    signin = () =>{
         event.preventDefault;
@@ -56,7 +54,7 @@ class Signin extends Component{
 
     render(){
         return (
-            <div className="container">
+            <div className="wrapper-fluid auth">
                 <form className="auth-form">
                     <div className="inp-row">
                         <input className="inp" type="text" placeholder="login" name="login" onChange={this.changeInput} />
@@ -70,8 +68,9 @@ class Signin extends Component{
                         <input className="inp" type="text" placeholder="e-mail" name="email" onChange={this.changeInput} />
                         <span className="info-message">{this.state.errors.email}</span>
                     </div>
+
                     <div className="btn "  onClick={this.signin}>Sign in</div>
-                    <span>{this.state.errors.userExist}</span>
+                    <span className="info-message">{this.state.errors.userExist}</span>
                 </form>
             </div>
         )

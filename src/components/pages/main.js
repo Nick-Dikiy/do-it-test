@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SimpleMap from '../SimpleMap'
 import axios from 'axios';
 import {connect} from 'react-redux';
-import {save, load, select,clearMarkers} from '../../actions/mapActions';
+import {save, load, select} from '../../actions/mapActions';
 
 const items = [
     {
@@ -24,7 +24,6 @@ const items = [
         type: "Банк",
         coordinates: [46.44070708407118, 30.69787681102753]
     },
-
 ];
 
 class Main extends Component{
@@ -125,8 +124,8 @@ class Main extends Component{
 
         return (
             <div id="main-page">
-                <div className="container">
-                    <div className="btn" onClick={this.showMarkers}>Show markers</div>
+                <div className="wrapper-fluid controls">
+
 
                     <select className="select" value={this.state.value} onChange={this.handleChange}>
                         <option disabled value="disabled">Type of objects</option>
@@ -135,8 +134,8 @@ class Main extends Component{
                         <option value="Ресторан">Restaurants</option>
                         <option value="Банк">Banks</option>
                     </select>
-
-                    <div className="btn" onClick={this.saveMarkers}>Save markers</div>
+                    <div className="btn" onClick={this.showMarkers}>Show marks</div>
+                    <div className="btn" onClick={this.saveMarkers}>Save marks</div>
                 </div>
 
                 <SimpleMap />
@@ -152,4 +151,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {save, load, select, clearMarkers})(Main);
+export default connect(mapStateToProps, {save, load, select})(Main);

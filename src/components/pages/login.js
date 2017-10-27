@@ -58,7 +58,7 @@ class Login extends Component{
     render(){
 
             return (
-                <div className="container">
+                <div className="wrapper-fluid auth">
                     <form className="auth-form">
                         <div className="inp-row">
                             <input className="inp" type="text" placeholder="login" name="login" onChange={this.changeInput} />
@@ -68,14 +68,12 @@ class Login extends Component{
                             <input className="inp" type="password" placeholder="password" name="password" onChange={this.changeInput} />
                             <span className="info-message">{this.state.errors.password}</span>
                         </div>
-                        <div className="">
-
+                        <div className="buttons">
 
                             <div className="btn " onClick={this.login}>Log in</div>
                             <Link className="btn " to='./signin'>Sign in</Link>
 
-
-                            <span>{this.state.errors.notFoudUser}</span>
+                            <span className="info-message">{this.state.errors.notFoundUser}</span>
                         </div>
                     </form>
                 </div>

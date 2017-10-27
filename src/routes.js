@@ -8,8 +8,6 @@ import main from './components/pages/main';
 import about from './components/pages/about';
 import signin from './components/pages/signin';
 
-
-
 const Routes = () => (
     <Switch>
         <Route exact path="/" render={() => (<Redirect to="/login" />)} />
@@ -20,6 +18,5 @@ const Routes = () => (
             <Route path="/signin" component={signin} />
     </Switch>
 );
-
 
 export default Routes

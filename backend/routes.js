@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const configDB = require('./configDB');
 const User = require('./models/userScheme');
-const geoInfoScheme = require('./models/geoInfoScheme');
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 import validate from '../backend/validator'

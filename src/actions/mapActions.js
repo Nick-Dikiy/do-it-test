@@ -3,8 +3,6 @@ export const LOAD_MARKERS = 'LOAD_MARKERS';
 export const ADD_MARKERS = 'ADD_MARKERS';
 export const SELECTED_ITEMS = 'SELECTED_ITEMS';
 export const CLEAR_MARKERS = 'CLEAR_MARKERS';
-import jwtDecode from 'jwt-decode';
-
 
 export const addMarkers = (markers)  => dispatch => {
     dispatch({

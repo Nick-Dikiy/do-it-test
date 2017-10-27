@@ -3,12 +3,12 @@ import React from 'react';
 
 const Header = () => (
 
-    <header>
+    <header className="app-header">
         <nav className="wrapper-fluid">
             <ul className="header-list">
-                <li className="header-item"><Link className="header-link" to='./login'>login</Link></li>
-                <li className="header-item"><Link className="header-link" to='./main'>main</Link></li>
-                <li className="header-item"><Link className="header-link" to='./about'>about</Link></li>
+                <li className="header-item"><Link className="header-link" to='./login'>Login</Link></li>
+                <li className="header-item"><Link className="header-link" to='./main'>Main</Link></li>
+                <li className="header-item"><Link className="header-link" to='./about'>About</Link></li>
 
             </ul>
         </nav>

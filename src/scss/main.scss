@@ -1,7 +1,12 @@
 @import "./default-styles/normilize";
 @import "Geocoder.css";
+@import "variables";
+body{
+  position: relative;
+}
 .wrapper{
   display: block;
+  //position: relative;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
@@ -9,15 +14,40 @@
 }
 .wrapper-fluid{
   display: block;
+  //position: relative;
   width: 100%;
   text-align: center;
 }
 
-header{
+.wrapper-fluid.auth{
   display: block;
+  position: relative;
+  height: 100vh;
+  background: url(../images/map.png);
+  background-position: 50% 50%;
+
+  &:after{
+    content: '';
+    background-color: rgba(0, 0, 0, 0.1);
+    height:100vh;
+    position:fixed;
+    width:100vw;
+    top:0;
+    left:0;
+    z-index: 10;
+  }
+}
+
+
+.app-header{
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-
-
+  height: 100px;
+  z-index: 50;
+  box-shadow: 0px 10px 40px 10px rgba(255, 255, 255, 0.3);
 }
 
 .header-list{
@@ -27,33 +57,45 @@ header{
   font-size: 0;
   text-align: center;
   vertical-align: middle;
-  background: #e3e3e3;
+  padding: 15px 0;
+  background: rgba(255, 255, 255, 1);
 
   .header-item{
     display: inline-block;
-    font-size: 20px;
-    text-transform: uppercase;
-    padding: 10px 20px;
+    padding: 15px 0;
+    margin: 0 70px;
+    border-bottom: 1px solid transparent;
+    font-size: 28px;
 
     .header-link{
       display: inline-block;
       font-size: 24px;
       font-weight: 500;
-      color: #000000;
+      color: rgb(23, 22, 21);
       text-decoration: none;
+      font-family: $font-crimson;
+      line-height: 39px;
 
     }
-    &>:hover{
-      color: #945604;
+    &:hover{
+      border-bottom: 1px solid #000;
     }
   }
 }
 
 .auth-form{
   display: block;
-  width: 50%;
-  margin:  40px auto;
-  box-shadow: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 40%;
+  //height: 100vh;
+  background: rgba(255,255,255,.4);
+  padding: 40px;
+  box-sizing: border-box;
+  z-index: 20;
+  text-align: center;
 
   .inp-row{
     display: inline-block;
@@ -63,82 +105,192 @@ header{
 
     .inp{
       display: inline-block;
+      font-family: $font-open-sans;
+      background: #fff;
+      border: 0px;
       width: 100%;
-      line-height: 38px;
+      line-height: 55px;
       height: auto;
       margin: 10px auto;
       font-size: 16px;
-      font-style: italic;
       padding: 0px 20px;
-      border: 1px solid #2f2f2f;
       box-sizing: border-box;
     }
+  }
 
-    .info-message{
-      display: inline-block;
-      width: 50%;
-      margin: 10px auto;
-      font-size: 20px;
+  .info-message{
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 5px auto 10px auto;
+    font-size: 14px;
+    color: #800006;
+    text-align: right;
+
+    &:before{
+      display: none;
+      position: absolute;
+      content: "\f00d";
+      font-family: 'FontAwesome';
+      font-size: 14px;
+      top:-50px;
+      right: 20px;
+      z-index: 200;
     }
-
   }
-}
 
-
-#map{
-  display: inline-block;
-  width: 100%;
-  height: 500px;
-}
-#main-page{
-  display: inline-block;
-  width: 100%;
-  .btn{
-    width: 33%;
-    margin-right: 0;
-  }
-  .select{
-    display: inline-block;
-    width: 33%;
-    line-height: 38px;
-    margin-top: 20px;
-    height: 39px;
-    border: 2px solid red;
-    border-right: 0;
-    border-left: 0;
-    font-size: 18px;
-  }
-}
-
-
-
-
-
-
-.buttons{
-  display: inline-block;
-  width: 100%;
-  text-align: center;
 }
 
 .btn{
   display: inline-block;
-  width: 45%;
-  line-height: 35px;
+  width: 47.5%;
+  line-height: 55px;
+  font-weight: 600;
   background: transparent;
-  border: 2px solid #ff5c00;
+  border: 2px solid #fff;
   font-size: 20px;
   margin: 20px auto;
   text-align: center;
   transition: all 0.3s ease;
-  color:#000;
+  color: #fff;
   text-decoration:  none;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  font-family: $font-open-sans;
+
+
+
 }
-.btn:first-child{
-  margin-right: 5%;
+
+#main-page{
+  position: absolute;
+  display: inline-block;
+  width: 100%;
+  height: calc(100vh - 100px);
+  margin-top: 100px;
+
+  .controls{
+    position: relative;
+    display: block;
+    width: 100%;
+    background-color: rgba(23, 22, 21, 0.8);
+    height: 80px;
+
+
+  }
+  #map{
+    display: inline-block;
+    width: 100%;
+    height: calc(100vh - 180px);
+  }
+
+  .btn{
+    display: inline-block;
+    width: 160px;
+    color:#000;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding: 0;
+    line-height: 53px;
+    font-size: 18px;
+    color: rgb(251, 251, 251);
+    box-sizing: border-box;
+
+
+    &:hover{
+      background: #fff;
+      color: rgb(249, 59, 59);
+      cursor: pointer;
+    }
+  }
+  .select{
+    display: inline-block;
+    width: 160px;
+    line-height: 55px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    height: 57px;
+    border: 2px solid #ffffff;
+    background: transparent;
+    font-family: $font-crimson;
+    font-size: 18px;
+    box-sizing: border-box;
+    text-align: center;
+    color:#fff;
+
+
+    option{
+      color:#000;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+    }
+  }
 }
-.btn:hover{
-  cursor: pointer;
-  background: #ff5c00;
-  color:#fff
+
+.buttons{
+  display: inline-block;
+  width: 100%;
+  font-size: 0;
+
+  .btn:first-child{
+    margin-right: 5%;
+  }
+  .btn:hover{
+    cursor: pointer;
+    background: #fff;
+    text-decoration: none;
+    color: rgb(249, 59, 59);
+      }
+}
+#about{
+  display: inline-block;
+  background: url(../images/about.png);
+  background-position: 50% 50%;
+  background-size: cover;
+  height: calc(100vh - 60px);
+  margin-top: 60px;
+  width: 100%;
+
+  .cv{
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 60px;
+    font-size: 16px;
+    padding: 40px 0;
+    box-sizing: border-box;
+    text-align: center;
+
+    .name{
+      display: block;
+      text-align: center;
+      font-size: 20px;
+      margin-top: 20px;
+      color: #fff;
+    }
+    .education{
+      display: block;
+      text-align: center;
+      font-size: 20px;
+      margin-top: 20px;
+      color: #fff;
+    }
+    .phone{
+      display: block;
+      text-align: center;
+      font-size: 20px;
+      margin-top: 20px;
+      color: #fff;
+    }
+    .email{
+      display: block;
+      text-align: center;
+      font-size: 20px;
+      margin-top: 20px;
+      color: #fff;
+    }
+  }
 }
